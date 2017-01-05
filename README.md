@@ -1,7 +1,9 @@
-Pixel Music
+#Pixel Music
 
--ToDo
+##ToDo
 
---1.Write more stages.
---2.Improve the UI.
---3.More note types(Maybe?)
+1.Write more stages.
+
+2.Improve the UI.
+
+3.More note types(Maybe?)
