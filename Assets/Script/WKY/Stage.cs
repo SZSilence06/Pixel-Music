@@ -14,6 +14,33 @@ namespace MusicGame
 
         private LinkedList<NoteData> notes = new LinkedList<NoteData>();
 
+        private string title;
+        private string author;
+
+        public string Title
+        {
+            get
+            {
+                return this.title;
+            }
+            set
+            {
+                this.title = value;
+            }
+        }
+
+        public string Author
+        {
+            get
+            {
+                return this.author;
+            }
+            set
+            {
+                this.author = value;
+            }
+        }
+
         public Texture2D BackgroundImage
         {
             get

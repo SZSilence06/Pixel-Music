@@ -57,7 +57,7 @@ namespace MusicGame
                 }
                 else
                 {
-                    this.lastTime = value;
+                    this.lastTime = value - 8;
                 }
             }
         }

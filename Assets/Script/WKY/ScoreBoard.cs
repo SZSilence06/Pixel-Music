@@ -6,8 +6,6 @@ namespace MusicGame
     public class ScoreBoard
     {
         static private ScoreBoard instance = null;
-        ComboText comboText = null;
-        Text scoreText = null;
 
         private int score = 0;
         private int combo = 0;
@@ -118,40 +116,35 @@ namespace MusicGame
         public void Reset()
         {
             this.score = this.combo = this.miss = this.good = this.perfect = this.bad = this.maxCombo = 0;
-            this.comboText = GameObject.Find("Combo").GetComponent<ComboText>();
-            this.scoreText = GameObject.Find("Score").GetComponent<Text>();
         }
 
         public void HitBad()
         {
             this.bad++;
             this.Combo = this.Combo + 1;
-            if(this.Combo < 20)
+            if(this.Combo <= 20)
             {
                 this.score += 20;
             }
-            else if(this.combo < 50)
+            else if(this.combo <= 50)
             {
                 this.score += 30;
             }
             else
             {
                 this.score += 40;
-            }
-            
-            comboText.ShowBad();
-            UpdateScore();
+            } 
         }
 
         public void HitGood()
         {
             this.good++;
             this.Combo = this.Combo + 1;
-            if (this.Combo < 20)
+            if (this.Combo <= 20)
             {
                 this.score += 30;
             }
-            else if (this.combo < 50)
+            else if (this.combo <= 50)
             {
                 this.score += 45;
             }
@@ -159,20 +152,17 @@ namespace MusicGame
             {
                 this.score += 60;
             }
-
-            comboText.ShowGood();
-            UpdateScore();
         }
 
         public void HitPerfect()
         {
             this.perfect++;
             this.Combo = this.Combo + 1;
-            if (this.Combo < 20)
+            if (this.Combo <= 20)
             {
                 this.score += 40;
             }
-            else if (this.combo < 50)
+            else if (this.combo <= 50)
             {
                 this.score += 60;
             }
@@ -180,22 +170,12 @@ namespace MusicGame
             {
                 this.score += 80;
             }
-
-            comboText.ShowPerfect();
-            UpdateScore();
         }
 
         public void HitMiss()
         {
             this.miss++;
             this.Combo = 0;
-
-            comboText.ShowMiss();
-        }
-
-        public void UpdateScore()
-        {
-            scoreText.text = "Score" + "\n" + this.score.ToString("D8") + "\n" + "Max Combo" + "\n" + this.maxCombo;
         }
     }
 }

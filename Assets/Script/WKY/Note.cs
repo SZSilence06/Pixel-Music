@@ -12,10 +12,10 @@ public abstract class Note : MonoBehaviour
     public static readonly int GOOD_TIME = 3;
 
     public static float INIT_HEIGHT = 5.0f;
-    public static readonly float FALL_SPEED = 0.05f;
+    public static readonly float FALL_SPEED = 0.1f;
     public static readonly float MIN_VALID_HEIGHT = 0.5f - FALL_SPEED * MISS_TIME;
 
-    public static GameController gameController = null;
+    protected GameController gameController = null;
 
     protected NoteData noteData;
 
@@ -37,11 +37,11 @@ public abstract class Note : MonoBehaviour
         gameController.NoteList.AddLast(this.gameObject);
     }
 
-    virtual protected void Update()
+    virtual protected void FixedUpdate()
     {
         if(this.transform.position.y < MIN_VALID_HEIGHT)
         {
-            ScoreBoard.GetInstance().HitMiss();
+            gameController.HitMiss();
         }
     }
 
@@ -67,8 +67,5 @@ public abstract class Note : MonoBehaviour
 
     }
 
-    public virtual bool IsValid()
-    {
-        return this.transform.position.y >= MIN_VALID_HEIGHT;
-    }
+    public abstract bool IsValid();
 }

@@ -39,7 +39,7 @@ public class TitleInitialize : MonoBehaviour {
 
     void LoadSongs()
     {
-        stages.Add(new StageTest());
+        stages.Add(new Stage01());
     }
 
     void LoadPlayScene()

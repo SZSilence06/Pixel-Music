@@ -26,6 +26,8 @@ namespace MusicGame
 
         private HitType hitType = HitType.NONE;
 
+        Vector2 resolutionScale = new Vector2(Screen.width / 800f, Screen.height / 480f);
+
         public int Duration
         {
             get
@@ -40,24 +42,29 @@ namespace MusicGame
 
             this.image = GetComponent<Image>();
             var newSize = image.rectTransform.sizeDelta;
+
+            float resolutionRatio = Screen.width * 1.0f / Screen.height / (800f / 480f); ;
+
+            newSize.x *= resolutionRatio;
             newSize.y = 52 + noteData.LastTime * Note.FALL_SPEED * 100f;
             image.rectTransform.sizeDelta = newSize;
 
+            image.rectTransform.localScale = new Vector3(1, 1, 1);
             this.scoreBoard = ScoreBoard.GetInstance();
         }
 
-        protected override void Update()
+        protected override void FixedUpdate()
         {
-            if (this.transform.position.y < (MIN_VALID_HEIGHT - 0.2f) * 100f)
+            if (this.transform.position.y < ((MIN_VALID_HEIGHT - 0.2f) * 100f) * resolutionScale.y)
             {
                 if(valid == true)
                 {
                     valid = false;
-                    ScoreBoard.GetInstance().HitMiss();
+                    base.gameController.HitMiss();
                 }
             }
 
-            if (transform.position.y < -16 - this.image.rectTransform.sizeDelta.y)
+            if (transform.position.y < (-16 - this.image.rectTransform.sizeDelta.y) *resolutionScale.y)
             {
                 DestroySelf();
             }
@@ -71,25 +78,25 @@ namespace MusicGame
                 switch (this.hitType)
                 {
                     case HitType.BAD:
-                        scoreBoard.HitBad();
+                        base.gameController.HitBad();
                         break;
                     case HitType.GOOD:
-                        scoreBoard.HitGood();
+                        base.gameController.HitGood();
                         break;
                     case HitType.PERFECT:
-                        scoreBoard.HitPerfect();
+                        base.gameController.HitPerfect();
                         break;
                 }
                 if (this.duration == 0)
                 {
-                    Note.gameController.ShowClickEffect(this.noteData.Channel);
+                    base.gameController.ShowClickEffect(this.noteData.Channel);
                     DestroySelf();
                 }
             }
             else
             {
                 var newPos = transform.position;
-                newPos.y -= FALL_SPEED * 100f;
+                newPos.y -= FALL_SPEED * 100f * resolutionScale.y;
                 transform.position = newPos;
             }
         }
@@ -102,7 +109,7 @@ namespace MusicGame
         public override void Init()
         {
             this.transform.SetParent(GameObject.Find("Canvas").transform, true);
-            this.transform.position = new Vector3(80f + 128f * this.noteData.Channel, 480f, 0f);
+            this.transform.position = new Vector3((80f + 128f * this.noteData.Channel) * resolutionScale.x, 480f * resolutionScale.y, 0f);
             this.duration = noteData.LastTime;
         }
 
@@ -115,7 +122,8 @@ namespace MusicGame
                 return;
             }
 
-            int leftFrame = (int)((this.transform.position.y - GameController.TIMELINE_HEIGHT + 20f) / (Note.FALL_SPEED * 100f));
+            int leftFrame = (int)((this.transform.position.y - (GameController.TIMELINE_HEIGHT + 20f)* resolutionScale.y) 
+                / (Note.FALL_SPEED * 100f * resolutionScale.y));
             int absLeftFrame = Math.Abs(leftFrame);
             if (absLeftFrame <= Note.MISS_TIME)
             {
@@ -134,10 +142,10 @@ namespace MusicGame
                     {
                         hitType = HitType.PERFECT;
                     }
-                    Note.gameController.ShowClickEffect(this.noteData.Channel);
+                    base.gameController.ShowClickEffect(this.noteData.Channel);
                 }
                 var newPos = transform.position;
-                newPos.y = 0.3f;
+                newPos.y = 30f * resolutionScale.y;
                 transform.position = newPos;
             }
         }
@@ -157,7 +165,7 @@ namespace MusicGame
                 valid = false;
                 if (this.duration >= 5)
                 {
-                    scoreBoard.HitMiss();
+                    base.gameController.HitMiss();
                 }
             }
         }
